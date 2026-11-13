@@ -10,7 +10,7 @@ on:
       asset:
         description: "APK name in the release assets"
         required: true
-        default: "Settings.apk"
+        default: "Account.apk"
 
 permissions:
   contents: read
