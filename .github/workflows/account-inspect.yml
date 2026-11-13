@@ -10,7 +10,7 @@ on:
       asset:
         description: "APK name in the release assets"
         required: true
-        default: "Account.apk"
+        default: "Settings.apk"
 
 permissions:
   contents: read
@@ -121,6 +121,14 @@ jobs:
           for n in needles:
               scan("string", n)
           print()
+
+          # when the APK is the OnePlus Account app, also take its provider / auth / util code whole
+          for sub in ['provider', 'util', 'data', 'authenticator', 'tokenauth', 'oneplush']:
+              for f in glob.glob(f'{SRC}/smali*/com/oneplus/account/{sub}/**/*.smali', recursive=True):
+                  copied.add(f)
+
+          for f in glob.glob(f'{SRC}/smali*/com/oneplus/accountsdk/utils/*.smali'):
+              copied.add(f)
 
           for f in sorted(copied):
               dst = os.path.join('inspect/smali_op', os.path.relpath(f, SRC))
